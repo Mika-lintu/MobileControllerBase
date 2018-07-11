@@ -53,50 +53,54 @@ public class NetworkServerUI : MonoBehaviour
         msg.value = message.ReadMessage<StringMessage>().value;
         string[] deltas = msg.value.Split('|');
         
-        
+
         if (int.TryParse(deltas[0], out messageID))
 
-        if (messageID == 1)
-        {
+            if (messageID == 1)
+            {
                 //Send axis information to player script
                 print("Axis information");
-        }
-        else if (messageID == 2)
-        {
-             
+            }
+            else if (messageID == 2)
+            {
+
                 int theBool;
-            if (int.TryParse(deltas[2], out theBool))
+                if (int.TryParse(deltas[2], out theBool))
 
-            if (theBool == 1)
-            {
-                isPressed = true;
+                    if (theBool == 1)
+                    {
+                        isPressed = true;
+                    }
+                    else
+                    {
+                        isPressed = false;
+                    }
+
+                if (int.TryParse(deltas[3], out buttonID))
+
+                    switch (buttonID)
+                    {
+                        case 1:
+                            print("Button 1 pressed: " + isPressed);
+                            //send button information (bool) to player
+                            break;
+                        case 2:
+                            print("Button 2 pressed: " + isPressed);
+                            //send button information (bool) to player
+                            break;
+                        case 3:
+                            print("Button 2 pressed: " + isPressed);
+                            //send button information (bool) to player
+                            break;
+
+                        default:
+                            break;
+                    }
             }
-            else
-            {
-                isPressed = false;
-            }
-
-            if (int.TryParse(deltas[3], out buttonID))
-
-            switch (buttonID)
-            {
-                case 1:
-                     print("Button 1 pressed: " + isPressed);
-                    //send button information (bool) to player
-                    break;
-                case 2:
-                    print("Button 2 pressed: " + isPressed);
-                    //send button information (bool) to player
-                    break;
-                case 3:
-                    print("Button 2 pressed: " + isPressed);
-                    //send button information (bool) to player
-                    break;
-
-                default:
-                    break;
-            }
-        }
+           else if (messageID == 3)
+           {
+               print("First Tilt Axis:  " + deltas[1]);
+           }
     }
 
     /*WIP 

@@ -87,6 +87,7 @@ namespace UnityStandardAssets.CrossPlatformInput
                     CrossPlatformInputManager.SetVirtualMousePositionZ(axisValue*Screen.width);
                     break;
             }
+            NetworkClientUI.SendTiltInfo(angle);
         }
 
 

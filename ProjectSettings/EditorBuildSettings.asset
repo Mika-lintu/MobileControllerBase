@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Controller.unity
     guid: 8e881567c7fad874f8d6848aad4c02d0
+  - enabled: 1
+    path: Assets/Scenes/tilt.unity
+    guid: c608e901f9f291d4c8da39ccd63a0394
   m_configObjects: {}

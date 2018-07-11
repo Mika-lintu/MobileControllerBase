@@ -73,6 +73,15 @@ public class NetworkClientUI : MonoBehaviour
             client.Send(messageNumber, msg);
         }
     }
+    static public void SendTiltInfo(float delta1)
+    {
+        if (client.isConnected)
+        {
+            StringMessage msg = new StringMessage();
+            msg.value = 3 + "|" + delta1;
+            client.Send(messageNumber, msg);
+        }
+    }
 
     static public void SendButtonInfo(string name, int pressed, int buttonID)
     {
