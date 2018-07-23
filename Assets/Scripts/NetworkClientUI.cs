@@ -9,13 +9,13 @@ public class NetworkClientUI : MonoBehaviour
 {
 
     public string serverIP;
-    public string portNumber;
+    public string portNumber = "172.31.16.253";
     static string ipaddress;
     
     static NetworkClient client;
 
 
-    string serverMessage;
+    static string serverMessage;
 
     static short messageNumber = 999;
     
@@ -73,13 +73,16 @@ public class NetworkClientUI : MonoBehaviour
             client.Send(messageNumber, msg);
         }
     }
-    static public void SendTiltInfo(float delta1)
+    static public void SendTiltInfo(float delta0, float delta1, float delta2)
     {
         if (client.isConnected)
         {
             StringMessage msg = new StringMessage();
-            msg.value = 3 + "|" + delta1;
+            msg.value = 3 + "|" + delta0 + "|" + delta1 + "|" + delta2;
             client.Send(messageNumber, msg);
+
+            serverMessage = "x: "+delta0 + "y: " + delta1 + "z: "+ delta2; 
+           
         }
     }
 

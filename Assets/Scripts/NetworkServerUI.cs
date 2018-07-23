@@ -56,12 +56,12 @@ public class NetworkServerUI : MonoBehaviour
 
         if (int.TryParse(deltas[0], out messageID))
 
-            if (messageID == 1)
+            if (messageID == 1) //Joystick Input message
             {
                 //Send axis information to player script
                 print("Axis information");
             }
-            else if (messageID == 2)
+            else if (messageID == 2) // Button input message
             {
 
                 int theBool;
@@ -97,9 +97,9 @@ public class NetworkServerUI : MonoBehaviour
                             break;
                     }
             }
-           else if (messageID == 3)
+           else if (messageID == 3) //Tilt input message
            {
-               print("First Tilt Axis:  " + deltas[1]);
+                print("x: " + deltas[1] + "y: " + deltas[2] + "z: " + deltas[3]);
            }
     }
 

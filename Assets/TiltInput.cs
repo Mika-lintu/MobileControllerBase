@@ -63,10 +63,12 @@ namespace UnityStandardAssets.CrossPlatformInput
                     case AxisOptions.ForwardAxis:
                         angle = Mathf.Atan2(Input.acceleration.x, -Input.acceleration.y)*Mathf.Rad2Deg +
                                 centreAngleOffset;
+                        //NetworkClientUI.SendTiltInfo("F",angle);
                         break;
                     case AxisOptions.SidewaysAxis:
                         angle = Mathf.Atan2(Input.acceleration.z, -Input.acceleration.y)*Mathf.Rad2Deg +
                                 centreAngleOffset;
+                        //NetworkClientUI.SendTiltInfo("S",angle);
                         break;
                 }
             }
@@ -87,7 +89,7 @@ namespace UnityStandardAssets.CrossPlatformInput
                     CrossPlatformInputManager.SetVirtualMousePositionZ(axisValue*Screen.width);
                     break;
             }
-            NetworkClientUI.SendTiltInfo(angle);
+            
         }
 
 
