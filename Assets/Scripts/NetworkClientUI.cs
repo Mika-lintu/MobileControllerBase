@@ -9,7 +9,7 @@ public class NetworkClientUI : MonoBehaviour
 {
 
     public string serverIP;
-    public string portNumber = "172.31.16.253";
+    public string portNumber;
     static string ipaddress;
     
     static NetworkClient client;
@@ -18,6 +18,7 @@ public class NetworkClientUI : MonoBehaviour
     static string serverMessage;
 
     static short messageNumber = 999;
+    static int clientID = 0;
     
 
     private void OnGUI()
@@ -27,7 +28,7 @@ public class NetworkClientUI : MonoBehaviour
         GUI.Label(new Rect(20, Screen.height - 30, 100, 20), "Status: " + client.isConnected);
 
         GUI.Box(new Rect(150, Screen.height - 50, 100, 50), "Server message");
-        GUI.Label(new Rect(150, Screen.height - 30, 300, 20), serverMessage);
+        GUI.Label(new Rect(150, Screen.height - 30, 300, 20), serverMessage = "" + clientID);
         
         if (!client.isConnected)
         {
@@ -54,14 +55,9 @@ public class NetworkClientUI : MonoBehaviour
         client.Connect(serverIP, port);
     }
 
-    static public void FirstMessage()
+    void SetMessageNumber(string number)
     {
-        if (client.isConnected)
-        {
-            StringMessage msg = new StringMessage();
-            msg.value = ipaddress;
-            client.Send(999, msg);
-        }
+        if (int.TryParse(number, out clientID)) { }
     }
 
     static public void SendJoystickInfo(float hDelta, float vDelta)
@@ -69,7 +65,7 @@ public class NetworkClientUI : MonoBehaviour
         if (client.isConnected)
         {
             StringMessage msg = new StringMessage();
-            msg.value = 1 + "|" + hDelta + "|" + vDelta;
+            msg.value = 1 + "|" + clientID + "|" + hDelta + "|" + vDelta;
             client.Send(messageNumber, msg);
         }
     }
@@ -78,11 +74,8 @@ public class NetworkClientUI : MonoBehaviour
         if (client.isConnected)
         {
             StringMessage msg = new StringMessage();
-            msg.value = 3 + "|" + delta0 + "|" + delta1 + "|" + delta2;
+            msg.value = 3 + "|" + clientID + "|" + delta0 + "|" + delta1 + "|" + delta2;
             client.Send(messageNumber, msg);
-
-            serverMessage = "x: "+delta0 + "y: " + delta1 + "z: "+ delta2; 
-           
         }
     }
 
@@ -91,7 +84,7 @@ public class NetworkClientUI : MonoBehaviour
         if (client.isConnected)
         {
             StringMessage msg = new StringMessage();
-            msg.value = 2 + "|" + name + "|" + pressed + "|" + buttonID;
+            msg.value = 2 + "|" + clientID + "|" + name + "|" + pressed + "|" + buttonID;
             client.Send(messageNumber, msg);
         }
     }
@@ -101,7 +94,10 @@ public class NetworkClientUI : MonoBehaviour
         StringMessage msg = new StringMessage();
         msg.value = message.ReadMessage<StringMessage>().value;
         string[] deltas = msg.value.Split('|');
-        serverMessage = deltas[0];
+        if (deltas[0] == "0")
+        {
+            SetMessageNumber(deltas[1]);
+        }
     }
 
 }

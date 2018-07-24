@@ -12,8 +12,9 @@ public class NetworkServerUI : MonoBehaviour
 {
 
     public GameObject player1;
+    public GameObject player2;
   
-    int playercount = 1;
+    int playercount = 0;
 
     public string newPort;
 
@@ -41,10 +42,146 @@ public class NetworkServerUI : MonoBehaviour
         NetworkServer.RegisterHandler(999, RecieveMessage);
     }
 
-    // GET MESSAGE FROM CLIENT WITH FIRST ID
+    private void Update()
+    {
+        if (playercount < (NetworkServer.connections.Count - 1))
+        {
+            playercount = (NetworkServer.connections.Count - 1);
+            switch (playercount)
+            {
+                case 1:
+                    SendMessage(1, 0, 1);
+                    break;
+                case 2:
+                    SendMessage(2, 0, 2);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // DELTAS[0] = Message ID ----------   DELTAS[1] = Player ID
     private void RecieveMessage(NetworkMessage message)
     {
+        StringMessage msg = new StringMessage();
+        msg.value = message.ReadMessage<StringMessage>().value;
+        string[] deltas = msg.value.Split('|');
+
+        int messageID;
+        int playerIDNum;
+
+        if (int.TryParse(deltas[0], out messageID)) { }
+        if (int.TryParse(deltas[1], out playerIDNum)) { }
+
+        if (messageID == 1) //Joystick Input message
+        {
+            JoystickInput(playerIDNum, deltas[2], deltas[3]);
+        }
+        else if (messageID == 2) // Button input message
+        {
+            ButtonInput(playerIDNum, deltas[2], deltas[3]);
+        }
+        else if (messageID == 3) //Tilt input message
+        { 
+            TiltInput(playerIDNum, deltas[2], deltas[3], deltas[4]);
+        }
+    }
+
+    void JoystickInput(int playerID, string horizontal, string vertical)
+    {
+        PlayerInput player = GetPlayerScript(playerID);
+        player.axisH = (Convert.ToSingle(horizontal));
+        player.axisV = (Convert.ToSingle(vertical));
+        print("Axis information H: " + horizontal + " and V: " + vertical);
+    }
+
+    void ButtonInput(int playerID, string pressed, string buttonPressed)
+    {
+        PlayerInput player = GetPlayerScript(playerID);
+        int theBool;
+        int buttonID;
+        if (int.TryParse(pressed, out theBool))
+        if (int.TryParse(buttonPressed, out buttonID))
+
+            switch (buttonID)
+            {
+                case 1:
+                    if (theBool == 1)
+                    {
+                        print("Button 1 pressed");
+                        player.Button1(true);
+                    }
+                    else
+                    {
+                        print("Button 1 released");
+                        player.Button1(false);
+                    }
+                    
+                    break;
+                case 2:
+                    if (theBool == 1)
+                    {
+                        print("Button 2 pressed");
+                        player.Button2(true);
+                    }
+                    else
+                    {
+                        print("Button 2 released");
+                        player.Button2(false);
+                    }
+                    
+                    break;
+                case 3:
+                    if (theBool == 1)
+                    {
+                        print("Button 3 pressed");
+                        player.Button3(true);
+                    }
+                    else
+                    {
+                        print("Button 3 released");
+                        player.Button3(false);
+                    }
+                    
+                    break;
+
+                default:
+                    break;
+            }
+    }
+
+    void TiltInput(int playerID, string xInput, string yInput, string zInput)
+    {
+        PlayerInput player = GetPlayerScript(playerID);
         
+        if (player != null)
+        {
+            player.accleX = (Convert.ToSingle(xInput));
+            player.accleY = (Convert.ToSingle(yInput));
+            player.accleZ = (Convert.ToSingle(zInput));
+            print(xInput + " - " + yInput + " - " + zInput);
+        }
+       
+    }
+
+    PlayerInput GetPlayerScript(int id)
+    {
+        switch (id)
+        {
+            case 1:
+                return player1.GetComponent<PlayerInput>();
+            case 2:
+                return player2.GetComponent<PlayerInput>();
+            default:
+                break;
+        }
+        return null;
+    }
+
+    /*
+    private void RecieveMessage(NetworkMessage message)
+    {
         int messageID;
         bool isPressed = false;
         int buttonID;
@@ -59,7 +196,9 @@ public class NetworkServerUI : MonoBehaviour
             if (messageID == 1) //Joystick Input message
             {
                 //Send axis information to player script
-                print("Axis information");
+                player1.GetComponent<PlayerInput>().axisH = (Convert.ToSingle(deltas[1]));;
+                player1.GetComponent<PlayerInput>().axisV = (Convert.ToSingle(deltas[2])); ;
+                print("Axis information H: " + deltas[1] + " and V: " + deltas[2]);
             }
             else if (messageID == 2) // Button input message
             {
@@ -102,6 +241,7 @@ public class NetworkServerUI : MonoBehaviour
                 print("x: " + deltas[1] + "y: " + deltas[2] + "z: " + deltas[3]);
            }
     }
+    */
 
     /*WIP 
     * Get player connections and get player id
@@ -113,7 +253,6 @@ public class NetworkServerUI : MonoBehaviour
     {
         StringMessage msg = new StringMessage();
         msg.value = msgID + "|" + msgInfo;
-        print(msgID + " " + msgInfo);
         NetworkServer.SendToClient(NetworkServer.connections[playerID].connectionId, 999, msg);
     }
 

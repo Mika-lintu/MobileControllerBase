@@ -5,7 +5,14 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerInput: MonoBehaviour
 {
-    
+
+    public float axisH;
+    public float axisV;
+
+    public float accleX;
+    public float accleY;
+    public float accleZ;
+
     void Update ()
     {
         //Player Movement

@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86edd14f6e731be4eb5ccac3eefb5ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: 
+  serverIP: 172.31.16.253
   portNumber: 2310
 --- !u!4 &1985187780
 Transform:
