@@ -20,7 +20,7 @@ namespace UnityStandardAssets.CrossPlatformInput
         {
             //If(!cooldown)
             CrossPlatformInputManager.SetButtonDown(Name);
-            NetworkClientUI.SendButtonInfo(name, 1, buttonID);
+            NetworkClientUI.SendButtonInfo(1, buttonID);
 
             
             //Add Cooldown
@@ -31,7 +31,7 @@ namespace UnityStandardAssets.CrossPlatformInput
         public void SetUpState()
         {
             CrossPlatformInputManager.SetButtonUp(Name);
-            NetworkClientUI.SendButtonInfo(name, 0, buttonID);
+            NetworkClientUI.SendButtonInfo(0, buttonID);
             
             print("I was Released");
         }

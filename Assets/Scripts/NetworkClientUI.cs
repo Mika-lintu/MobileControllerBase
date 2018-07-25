@@ -18,6 +18,7 @@ public class NetworkClientUI : MonoBehaviour
     static string serverMessage;
 
     static short messageNumber = 999;
+
     static int clientID = 0;
     
 
@@ -55,7 +56,7 @@ public class NetworkClientUI : MonoBehaviour
         client.Connect(serverIP, port);
     }
 
-    void SetMessageNumber(string number)
+    void SetClientID(string number)
     {
         if (int.TryParse(number, out clientID)) { }
     }
@@ -79,12 +80,12 @@ public class NetworkClientUI : MonoBehaviour
         }
     }
 
-    static public void SendButtonInfo(string name, int pressed, int buttonID)
+    static public void SendButtonInfo( int pressed, int buttonID)
     {
         if (client.isConnected)
         {
             StringMessage msg = new StringMessage();
-            msg.value = 2 + "|" + clientID + "|" + name + "|" + pressed + "|" + buttonID;
+            msg.value = 2 + "|" + clientID + "|" + pressed + "|" + buttonID;
             client.Send(messageNumber, msg);
         }
     }
@@ -96,7 +97,7 @@ public class NetworkClientUI : MonoBehaviour
         string[] deltas = msg.value.Split('|');
         if (deltas[0] == "0")
         {
-            SetMessageNumber(deltas[1]);
+            SetClientID(deltas[1]);
         }
     }
 
