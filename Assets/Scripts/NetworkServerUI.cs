@@ -13,6 +13,10 @@ public class NetworkServerUI : MonoBehaviour
 
     public GameObject player1;
     public GameObject player2;
+    public GameObject player3;
+    public GameObject player4;
+    //public GameObject player5;
+    //public GameObject player6;
   
     int playercount = 0;
 
@@ -55,6 +59,18 @@ public class NetworkServerUI : MonoBehaviour
                 case 2:
                     SendMessage(2, 0, 2);
                     break;
+                case 3:
+                    SendMessage(3, 0, 3);
+                    break;
+                case 4:
+                    SendMessage(4, 0, 4);
+                    break;
+                //case 5:
+                //    SendMessage(5, 0, 5);
+                //    break;
+                //case 6:
+                //    SendMessage(6, 0, 6);
+                //    break;
                 default:
                     break;
             }
@@ -173,6 +189,14 @@ public class NetworkServerUI : MonoBehaviour
                 return player1.GetComponent<PlayerInput>();
             case 2:
                 return player2.GetComponent<PlayerInput>();
+            case 3:
+                return player3.GetComponent<PlayerInput>();
+            case 4:
+                return player4.GetComponent<PlayerInput>();
+            //case 5:
+            //    return player5.GetComponent<PlayerInput>();
+            //case 6:
+            //    return player6.GetComponent<PlayerInput>();
             default:
                 break;
         }
